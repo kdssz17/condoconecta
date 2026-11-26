@@ -1,0 +1,36 @@
+# Pipeline de Rollback do CondoConecta
+# Reimplanta em producao uma versao anterior (tag) e a marca como Latest.
+# Exige aprovacao do revisor via environment "production".
+
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da versao a ser reimplantada (ex.: v1.2.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      TAG: ${{ inputs.tag }}
+    steps:
+      - name: Checkout da tag informada
+        uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+
+      - name: Deploy da tag em Producao
+        run: echo "Deploy em producao da tag $TAG (Render)"
+
+      - name: Marcar Release como Latest
+        run: gh release edit "$TAG" --latest
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

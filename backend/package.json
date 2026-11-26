@@ -1,0 +1,13 @@
+{
+  "name": "condoconecta-backend",
+  "version": "0.1.0",
+  "description": "API REST do CondoConecta",
+  "private": true,
+  "main": "src/reservas.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
+  }
+}
